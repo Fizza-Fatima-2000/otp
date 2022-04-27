@@ -72,34 +72,36 @@ var date =new Date().getTime() /1000
     })
 
     if (resend) {
+        console.log(resend);
         var resendUpdate = await otp.updateOne({
             _id: resend._id
         }
         ,{
             otp_code: opt_resend,
-            expireIn: { $gte:date }
+            expireIn:  date 
         }
         )
-        return res.send("success"); 
     } 
     else{
        
         const insert = await otp.create({
             user_id: req.body.user_id,
             otp_code: opt_resend,
-            expireIn: datetime,
+            expireIn: date,
             is_verified: false
         })
+        console.log("one");
     }
     
 
     var mobile_no = "03161620898"
-    var url = `https://bsms.telecard.com.pk/SMSportal/Customer/apikey.aspx?apikey=${process.env.otp_api}&msg=Your verification code is ${otpcode} from olx. &mobileno=${mobile_no}`
+    var url = `https://bsms.telecard.com.pk/SMSportal/Customer/apikey.aspx?apikey=${process.env.otp_api}&msg=Your verification code is ${opt_resend} from olx. &mobileno=${mobile_no}`
     var send = await  axios({
         method:'post',
         url
     })
-    
+    console.log(send);
+    return res.send("success"); 
 
 }
 
